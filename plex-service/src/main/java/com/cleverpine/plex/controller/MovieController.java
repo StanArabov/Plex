@@ -4,18 +4,16 @@ import com.cleverpine.plex.api.MoviesApi;
 import com.cleverpine.plex.auth.ViravaSecured;
 import com.cleverpine.plex.auth.roles.Resources;
 import com.cleverpine.plex.dto.MovieDto;
-import com.cleverpine.plex.model.MovieListItem;
-import com.cleverpine.plex.model.MoviesListResponse;
-import com.cleverpine.plex.service.MovieService;
 import com.cleverpine.plex.mapper.MovieMapper;
+import com.cleverpine.plex.model.MoviesListResponse;
+import com.cleverpine.plex.model.SingleMovieResponse;
+import com.cleverpine.plex.service.MovieService;
 import com.cleverpine.viravaspringhelper.dto.ScopeType;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.NativeWebRequest;
 
-import java.util.*;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,19 +25,37 @@ public class MovieController implements MoviesApi {
     @ViravaSecured(resource = Resources.MOVIES, scope = ScopeType.READ)
     public ResponseEntity<String> apiMoviesTestGet() {
         movieService.simpleMovieETL();
-//        movieService.getMovieList();
         return ResponseEntity.ok("Movie Test");
     }
 
     @Override
+    @ViravaSecured(resource = Resources.MOVIES, scope = ScopeType.READ)
     public ResponseEntity<MoviesListResponse> apiMoviesGet(Integer page, Integer size) {
-        List<MovieDto> movieList = movieService.getMovieList(page, size);
+        try {
+            List<MovieDto> movieList = movieService.getMovieList(page, size);
 
-        MoviesListResponse response = new MoviesListResponse();
-        movieList.stream()
-                .map(movieMapper::movieDtoToMovieListItem)
-                .forEach(response::addDataItem);
+            MoviesListResponse response = new MoviesListResponse();
+            movieList.stream()
+                    .map(movieMapper::movieDtoToMovieListItem)
+                    .forEach(response::addDataItem);
 
-        return ResponseEntity.ok(response);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @Override
+    @ViravaSecured(resource = Resources.MOVIES, scope = ScopeType.READ)
+    public ResponseEntity<SingleMovieResponse> apiMoviesMovieIdGet(Long movieId) {
+        try {
+            MovieDto searchedMovie = movieService.getMovieById(movieId);
+            SingleMovieResponse response = new SingleMovieResponse();
+            response.setData(movieMapper.movieDtoToSingleMovie(searchedMovie));
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+
     }
 }

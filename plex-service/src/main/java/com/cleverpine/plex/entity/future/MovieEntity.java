@@ -3,7 +3,7 @@ package com.cleverpine.plex.entity.future;
 import jakarta.persistence.*;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 @Entity
@@ -13,7 +13,7 @@ public class MovieEntity {
     @Id
     @Column(name = "movie_id")
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private Long movie_id;
+    private Long id;
 
     @Column(name = "title")
     private String title;
@@ -26,7 +26,7 @@ public class MovieEntity {
     private Double rating;
 
     @Column(name="release_date")
-    private LocalDateTime releaseDate;
+    private LocalDate releaseDate;
 
     @Column(name = "duration")
     private Integer duration;
@@ -54,7 +54,7 @@ public class MovieEntity {
 
     protected MovieEntity(){};
 
-    public MovieEntity(String title, String description, Double rating, LocalDateTime releaseDate, Integer duration, Integer year, String director, String writer, String genres, String stars, String audio, String subtitles) {
+    public MovieEntity(String title, String description, Double rating, LocalDate releaseDate, Integer duration, Integer year, String director, String writer, String genres, String stars, String audio, String subtitles) {
         this.title = title;
         this.description = description;
         this.rating = rating;

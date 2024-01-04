@@ -2,6 +2,7 @@ package com.cleverpine.plex.service;
 
 import com.cleverpine.plex.dto.MovieDto;
 import com.cleverpine.plex.entity.future.MovieEntity;
+import com.cleverpine.plex.mapper.MovieMapper;
 import com.cleverpine.plex.projection.MovieProjection;
 import com.cleverpine.plex.repository.future.MoviesRepository;
 import com.cleverpine.plex.repository.legacy.MetadataItemsRepository;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,6 +23,7 @@ public class MovieService {
 
     final private MetadataItemsRepository metadataItemsRepository;
     final private MoviesRepository moviesRepository;
+    final private MovieMapper movieMapper;
 
     public void simpleMovieETL() {
         List<MovieEntity> moviesList = new ArrayList<>();
@@ -30,7 +34,9 @@ public class MovieService {
                     movieProjection.getTitle(),
                     movieProjection.getDescription(),
                     movieProjection.getRating(),
-                    movieProjection.getReleaseDate(),
+                    (movieProjection.getReleaseDate() != null)
+                            ? movieProjection.getReleaseDate().toLocalDate()
+                            : null,
                     movieProjection.getDuration(),
                     movieProjection.getYear(),
                     movieProjection.getDirector(),
@@ -49,7 +55,23 @@ public class MovieService {
         PageRequest pageRequest = PageRequest.of(page, size);
         Page<MovieEntity> movePage = moviesRepository.findAll(pageRequest);
         return movePage.getContent().stream()
-                .map(movie -> new MovieDto(movie.getMovie_id(), movie.getTitle(), movie.getDescription(), movie.getRating(), movie.getReleaseDate(), movie.getDuration(), movie.getYear(), movie.getDirector(), movie.getWriter(), movie.getGenres(), movie.getStars(), movie.getAudio(), movie.getSubtitles()))
+                .map(movie -> new MovieDto(movie.getId(), movie.getTitle(), movie.getDescription(), movie.getRating(), movie.getReleaseDate(), movie.getDuration(), movie.getYear(), movie.getDirector(), movie.getWriter(), movie.getGenres(), movie.getStars(), movie.getAudio(), movie.getSubtitles()))
                 .collect(Collectors.toList());
+    }
+
+    public MovieDto getMovieById(Long movieId) {
+        try {
+            Optional<MovieEntity> movie = moviesRepository.findById(movieId);
+
+            if (movie.isEmpty()) {
+                throw new RuntimeException("Movie not found");
+            }
+
+            return movieMapper.movieEntityToMovieDto(movie.get());
+        } catch (NoSuchElementException e) {
+            throw new RuntimeException("Movie not found", e);
+        } catch (Exception e) {
+            throw new RuntimeException("An unexpected error occurred", e);
+        }
     }
 }

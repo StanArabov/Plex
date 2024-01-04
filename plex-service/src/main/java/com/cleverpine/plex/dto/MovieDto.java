@@ -3,7 +3,7 @@ package com.cleverpine.plex.dto;
 import jakarta.persistence.Column;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 public class MovieDto {
@@ -15,7 +15,7 @@ public class MovieDto {
 
     private Double rating;
 
-    private LocalDateTime releaseDate;
+    private LocalDate releaseDate;
 
     private Integer duration;
 
@@ -33,7 +33,7 @@ public class MovieDto {
 
     private String subtitles;
 
-    public MovieDto(Long id, String title, String description, Double rating, LocalDateTime releaseDate, Integer duration, Integer year, String director, String writer, String genres, String stars, String audio, String subtitles) {
+    public MovieDto(Long id, String title, String description, Double rating, LocalDate releaseDate, Integer duration, Integer year, String director, String writer, String genres, String stars, String audio, String subtitles) {
         this.id = id;
         this.title = title;
         this.description = description;
