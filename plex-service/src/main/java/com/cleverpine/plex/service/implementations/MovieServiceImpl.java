@@ -1,4 +1,4 @@
-package com.cleverpine.plex.service;
+package com.cleverpine.plex.service.implementations;
 
 import com.cleverpine.plex.dto.MovieDto;
 import com.cleverpine.plex.entity.future.MovieEntity;
@@ -6,6 +6,7 @@ import com.cleverpine.plex.mapper.MovieMapper;
 import com.cleverpine.plex.projection.MovieProjection;
 import com.cleverpine.plex.repository.future.MoviesRepository;
 import com.cleverpine.plex.repository.legacy.MetadataItemsRepository;
+import com.cleverpine.plex.service.interfaces.MovieServiceInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class MovieService {
+public class MovieServiceImpl implements MovieServiceInterface {
 
     final private MetadataItemsRepository metadataItemsRepository;
     final private MoviesRepository moviesRepository;
@@ -51,6 +52,7 @@ public class MovieService {
         moviesRepository.saveAll(moviesList);
     }
 
+    @Override
     public List<MovieDto> getMovieList(Integer page, Integer size) {
         PageRequest pageRequest = PageRequest.of(page, size);
         Page<MovieEntity> movePage = moviesRepository.findAll(pageRequest);
@@ -59,6 +61,7 @@ public class MovieService {
                 .collect(Collectors.toList());
     }
 
+    @Override
     public MovieDto getMovieById(Long movieId) {
         try {
             Optional<MovieEntity> movie = moviesRepository.findById(movieId);
@@ -71,6 +74,7 @@ public class MovieService {
         }
     }
 
+    @Override
     public MovieDto getMovieByTitle(String title) {
         try {
             Optional<MovieEntity> movie = moviesRepository.findByTitle(title);
