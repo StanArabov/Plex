@@ -30,7 +30,7 @@ public class MovieController implements MoviesApi {
 
     @Override
     @ViravaSecured(resource = Resources.MOVIES, scope = ScopeType.READ)
-    public ResponseEntity<MoviesListResponse> apiMoviesGet(Integer page, Integer size) {
+    public ResponseEntity<MoviesListResponse> getPaginatedMovieList(Integer page, Integer size) {
         List<MovieDto> movieList = movieService.getMovieList(page, size);
         MoviesListResponse response = new MoviesListResponse();
         response.setData(movieMapper.movieDtoToMovieListItem(movieList));
@@ -39,7 +39,7 @@ public class MovieController implements MoviesApi {
 
     @Override
     @ViravaSecured(resource = Resources.MOVIES, scope = ScopeType.READ)
-    public ResponseEntity<SingleMovieResponse> apiMoviesMovieIdGet(Long movieId) {
+    public ResponseEntity<SingleMovieResponse> getMovieById(Long movieId) {
         MovieDto searchedMovie = movieService.getMovieById(movieId);
         SingleMovieResponse response = new SingleMovieResponse();
         response.setData(movieMapper.movieDtoToSingleMovie(searchedMovie));
@@ -47,7 +47,7 @@ public class MovieController implements MoviesApi {
     }
 
     @Override
-    public ResponseEntity<SingleMovieResponse> apiMoviesSearchGet(String title) {
+    public ResponseEntity<SingleMovieResponse> getMovieByTitle(String title) {
         MovieDto searchedMovie = movieService.getMovieByTitle(title);
         SingleMovieResponse response = new SingleMovieResponse();
         response.setData(movieMapper.movieDtoToSingleMovie(searchedMovie));
