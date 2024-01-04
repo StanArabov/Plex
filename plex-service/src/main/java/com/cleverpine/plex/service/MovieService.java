@@ -62,16 +62,24 @@ public class MovieService {
     public MovieDto getMovieById(Long movieId) {
         try {
             Optional<MovieEntity> movie = moviesRepository.findById(movieId);
-
             if (movie.isEmpty()) {
                 throw new RuntimeException("Movie not found");
             }
-
             return movieMapper.movieEntityToMovieDto(movie.get());
         } catch (NoSuchElementException e) {
             throw new RuntimeException("Movie not found", e);
-        } catch (Exception e) {
-            throw new RuntimeException("An unexpected error occurred", e);
+        }
+    }
+
+    public MovieDto getMovieByTitle(String title) {
+        try {
+            Optional<MovieEntity> movie = moviesRepository.findByTitle(title);
+            if (movie.isEmpty()) {
+                throw new RuntimeException("Movie not found");
+            }
+            return movieMapper.movieEntityToMovieDto(movie.get());
+        } catch (NoSuchElementException e) {
+            throw new RuntimeException("Movie not found", e);
         }
     }
 }

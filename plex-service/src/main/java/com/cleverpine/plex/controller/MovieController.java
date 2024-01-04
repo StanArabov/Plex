@@ -58,4 +58,16 @@ public class MovieController implements MoviesApi {
         }
 
     }
+
+    @Override
+    public ResponseEntity<SingleMovieResponse> apiMoviesSearchGet(String title) {
+        try{
+            MovieDto searchedMovie = movieService.getMovieByTitle(title);
+            SingleMovieResponse response = new SingleMovieResponse();
+            response.setData(movieMapper.movieDtoToSingleMovie(searchedMovie));
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
