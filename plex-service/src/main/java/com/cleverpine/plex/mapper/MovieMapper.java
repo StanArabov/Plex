@@ -6,13 +6,17 @@ import com.cleverpine.plex.model.MovieListItem;
 import com.cleverpine.plex.model.SingleMovie;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class MovieMapper {
-    public MovieListItem movieDtoToMovieListItem(MovieDto movieDto) {
-        MovieListItem item = new MovieListItem();
-        item.setId(movieDto.getId());
-        item.setTitle(movieDto.getTitle());
-        return item;
+    public List<MovieListItem> movieDtoToMovieListItem(List<MovieDto> movieDtos) {
+        return movieDtos.stream().map(item -> {
+            MovieListItem newItem = new MovieListItem();
+            newItem.setId(item.getId());
+            newItem.setTitle(item.getTitle());
+            return newItem;
+        }).toList();
     }
 
     public SingleMovie movieDtoToSingleMovie(MovieDto movieDto) {

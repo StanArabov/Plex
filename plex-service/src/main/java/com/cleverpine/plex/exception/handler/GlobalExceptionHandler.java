@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.webjars.NotFoundException;
 
 @Slf4j
 @ControllerAdvice
@@ -29,4 +30,8 @@ public class GlobalExceptionHandler extends BaseGlobalExceptionHandler {
         return createErrorResponse(e, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<String> handleNotFoundException(NotFoundException e) {
+        return new ResponseEntity<>("Not found: " + e.getMessage(), HttpStatus.NOT_FOUND);
+    }
 }

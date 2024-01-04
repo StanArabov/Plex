@@ -31,43 +31,26 @@ public class MovieController implements MoviesApi {
     @Override
     @ViravaSecured(resource = Resources.MOVIES, scope = ScopeType.READ)
     public ResponseEntity<MoviesListResponse> apiMoviesGet(Integer page, Integer size) {
-        try {
-            List<MovieDto> movieList = movieService.getMovieList(page, size);
-
-            MoviesListResponse response = new MoviesListResponse();
-            movieList.stream()
-                    .map(movieMapper::movieDtoToMovieListItem)
-                    .forEach(response::addDataItem);
-
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
+        List<MovieDto> movieList = movieService.getMovieList(page, size);
+        MoviesListResponse response = new MoviesListResponse();
+        response.setData(movieMapper.movieDtoToMovieListItem(movieList));
+        return ResponseEntity.ok(response);
     }
 
     @Override
     @ViravaSecured(resource = Resources.MOVIES, scope = ScopeType.READ)
     public ResponseEntity<SingleMovieResponse> apiMoviesMovieIdGet(Long movieId) {
-        try {
-            MovieDto searchedMovie = movieService.getMovieById(movieId);
-            SingleMovieResponse response = new SingleMovieResponse();
-            response.setData(movieMapper.movieDtoToSingleMovie(searchedMovie));
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
-
+        MovieDto searchedMovie = movieService.getMovieById(movieId);
+        SingleMovieResponse response = new SingleMovieResponse();
+        response.setData(movieMapper.movieDtoToSingleMovie(searchedMovie));
+        return ResponseEntity.ok(response);
     }
 
     @Override
     public ResponseEntity<SingleMovieResponse> apiMoviesSearchGet(String title) {
-        try{
-            MovieDto searchedMovie = movieService.getMovieByTitle(title);
-            SingleMovieResponse response = new SingleMovieResponse();
-            response.setData(movieMapper.movieDtoToSingleMovie(searchedMovie));
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
+        MovieDto searchedMovie = movieService.getMovieByTitle(title);
+        SingleMovieResponse response = new SingleMovieResponse();
+        response.setData(movieMapper.movieDtoToSingleMovie(searchedMovie));
+        return ResponseEntity.ok(response);
     }
 }
