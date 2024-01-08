@@ -7,8 +7,7 @@ import com.cleverpine.plex.dto.MovieDto;
 import com.cleverpine.plex.mapper.MovieMapper;
 import com.cleverpine.plex.model.MoviesListResponse;
 import com.cleverpine.plex.model.SingleMovieResponse;
-import com.cleverpine.plex.service.implementations.MovieServiceImpl;
-import com.cleverpine.plex.service.interfaces.MovieServiceInterface;
+import com.cleverpine.plex.service.interfaces.MovieService;
 import com.cleverpine.viravaspringhelper.dto.ScopeType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +18,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 public class MovieController implements MoviesApi {
-    private final MovieServiceInterface movieService;
+    private final MovieService movieService;
     private final MovieMapper movieMapper;
 
     @Override
