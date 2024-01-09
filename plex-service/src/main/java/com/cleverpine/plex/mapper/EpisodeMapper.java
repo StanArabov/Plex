@@ -12,29 +12,14 @@ import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
-@Mapper
+@Mapper(componentModel = "spring")
 public interface EpisodeMapper {
     EpisodeMapper INSTANCE = Mappers.getMapper(EpisodeMapper.class);
 
-    @Mapping(source = "id", target = "id")
-    @Mapping(source = "title", target = "title")
-    @Mapping(source = "description", target = "description")
-    @Mapping(source = "rating", target = "rating")
-    @Mapping(source = "releaseDate", target = "releaseDate")
-    @Mapping(source = "director", target = "director")
-    @Mapping(source = "writer", target = "writer")
-    @Mapping(source = "stars", target = "stars")
-    @Mapping(source = "duration", target = "duration")
-    @Mapping(source = "year", target = "year")
-    @Mapping(source = "number", target = "number")
-    @Mapping(source = "audio", target = "audio")
-    @Mapping(source = "subtitles", target = "subtitles")
     EpisodeDto episodeEntityToEpisodeDto(EpisodeEntity episodeEntity);
 
     List<EpisodeDto> episodeEntityListToEpisodeDtoList(List<EpisodeEntity> entities);
 
-    @Mapping(source = "id", target = "id")
-    @Mapping(source = "title", target = "title")
     @Mapping(source = "number", target = "episodeNumber")
     EpisodeListItem episodeDtoToEpisodeListItem(EpisodeDto dto);
 
@@ -42,39 +27,16 @@ public interface EpisodeMapper {
 
     default EpisodeListResponse episodeDtosToEpisodeListResponse(List<EpisodeDto> dtos) {
         EpisodeListResponse response = new EpisodeListResponse();
-        List<EpisodeListItem> episodeListItems = INSTANCE.episodeDtoListToEpisodeItemsList(dtos);
+        List<EpisodeListItem> episodeListItems = episodeDtoListToEpisodeItemsList(dtos);
         response.setData(episodeListItems);
         return response;
     }
 
-//    private String description;
-//    private Double rating;
-//    private LocalDate releaseDate;
-//    private String director;
-//    private String writer;
-//    private String stars;
-//    private Integer duration;
-//    private Integer year;
-//    private Integer number;
-//    private String audio;
-//    private String subtitles;
-    @Mapping(source = "title", target = "title")
-    @Mapping(source = "description", target = "description")
-    @Mapping(source = "rating", target = "rating")
-    @Mapping(source = "releaseDate", target = "releaseDate")
-    @Mapping(source = "director", target = "director")
-    @Mapping(source = "writer", target = "writer")
-    @Mapping(source = "stars", target = "stars")
-    @Mapping(source = "duration", target = "duration")
-    @Mapping(source = "year", target = "year")
-    @Mapping(source = "number", target = "number")
-    @Mapping(source = "audio", target = "audio")
-    @Mapping(source = "subtitles", target = "subtitles")
     SingleEpisode episodeDtoToSingleEpisode(EpisodeDto episodeDto);
 
     default SingleEpisodeResponse episodeDtoToSingleEpisodeResponse(EpisodeDto episodeDto) {
         SingleEpisodeResponse response = new SingleEpisodeResponse();
-        response.setData(INSTANCE.episodeDtoToSingleEpisode(episodeDto));
+        response.setData(episodeDtoToSingleEpisode(episodeDto));
         return  response;
     }
 
