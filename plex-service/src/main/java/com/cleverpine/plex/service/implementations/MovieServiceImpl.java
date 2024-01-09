@@ -32,7 +32,6 @@ public class MovieServiceImpl implements MovieService {
     private final EpisodesRepository episodesRepository;
     private final SeasonsRepository seasonsRepository;
     private final MoviesRepository moviesRepository;
-    private final MovieMapper movieMapper;
 
     public void simpleMovieETL() {
         List<MovieEntity> moviesList = new ArrayList<>();
@@ -136,34 +135,20 @@ public class MovieServiceImpl implements MovieService {
     public List<MovieDto> getMovieList(Integer page, Integer size) {
         PageRequest pageRequest = PageRequest.of(page, size);
         Page<MovieEntity> movePage = moviesRepository.findAll(pageRequest);
-        return movePage.getContent().stream()
-                .map(movie -> new MovieDto(movie.getId(), movie.getTitle(), movie.getDescription(), movie.getRating(), movie.getReleaseDate(), movie.getDuration(), movie.getYear(), movie.getDirector(), movie.getWriter(), movie.getGenres(), movie.getStars(), movie.getAudio(), movie.getSubtitles()))
-                .collect(Collectors.toList());
+        return MovieMapper.INSTANCE.movieEntityListToMovieDtoList(movePage.getContent());
     }
 
     @Override
     public MovieDto getMovieById(Long movieId) {
-        try {
-            Optional<MovieEntity> movie = moviesRepository.findById(movieId);
-            if (movie.isEmpty()) {
-                throw new RuntimeException("Movie not found");
-            }
-            return movieMapper.movieEntityToMovieDto(movie.get());
-        } catch (NoSuchElementException e) {
-            throw new RuntimeException("Movie not found", e);
-        }
+        return moviesRepository.findById(movieId)
+                .map(MovieMapper.INSTANCE::movieEntityToMovieDto)
+                .orElseThrow(() ->  new RuntimeException("Movie not found: " + movieId));
     }
 
     @Override
     public MovieDto getMovieByTitle(String title) {
-        try {
-            Optional<MovieEntity> movie = moviesRepository.findByTitle(title);
-            if (movie.isEmpty()) {
-                throw new RuntimeException("Movie not found");
-            }
-            return movieMapper.movieEntityToMovieDto(movie.get());
-        } catch (NoSuchElementException e) {
-            throw new RuntimeException("Movie not found", e);
-        }
+        return moviesRepository.findByTitle(title)
+                .map(MovieMapper.INSTANCE::movieEntityToMovieDto)
+                .orElseThrow(() ->  new RuntimeException("Movie not found: " + title));
     }
 }

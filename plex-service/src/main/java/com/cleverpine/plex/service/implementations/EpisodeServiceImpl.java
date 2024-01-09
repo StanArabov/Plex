@@ -9,8 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,15 +22,8 @@ public class EpisodeServiceImpl implements EpisodeService {
 
     @Override
     public EpisodeDto getEpisodeById(Integer episodeId) {
-        try {
-            Optional<EpisodeEntity> episode = episodesRepository.findById(episodeId);
-            if (episode.isEmpty()) {
-                throw new RuntimeException("Episode not found");
-            }
-            return EpisodeMapper.INSTANCE.episodeEntityToEpisodeDto(episode.get());
-        } catch (NoSuchElementException e) {
-            throw new RuntimeException("Episode not found", e);
-        }
-
+        return episodesRepository.findById(episodeId)
+                .map(EpisodeMapper.INSTANCE::episodeEntityToEpisodeDto)
+                .orElseThrow(() -> new RuntimeException("Episode not found with ID: " + episodeId));
     }
 }

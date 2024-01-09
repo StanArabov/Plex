@@ -11,8 +11,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @AllArgsConstructor
 @Service
@@ -27,27 +25,15 @@ public class TvSeriesServiceImpl implements TvSeriesService {
 
     @Override
     public TvSeriesDto getTvSeriesById(Integer tvSeriesId) {
-        try {
-            Optional<TvSeriesEntity> entity = tvSeriesRepository.findById(tvSeriesId);
-            if (entity.isEmpty()) {
-                throw new RuntimeException("Tv Series not found");
-            }
-            return TvSeriesMapper.INSTANCE.tvSeriesEntityToTvSeriesDto(entity.get());
-        } catch (NoSuchElementException e) {
-            throw new RuntimeException("Tv Series not found", e);
-        }
+        return tvSeriesRepository.findById(tvSeriesId)
+                .map(TvSeriesMapper.INSTANCE::tvSeriesEntityToTvSeriesDto)
+                .orElseThrow(() -> new RuntimeException("Tv Series not found: " + tvSeriesId));
     }
 
     @Override
     public TvSeriesDto getTvSeriesByTitle(String tvSeriesTitle) {
-        try {
-            Optional<TvSeriesEntity> entity = tvSeriesRepository.findByTitle(tvSeriesTitle);
-            if (entity.isEmpty()) {
-                throw new RuntimeException("Tv Series not found");
-            }
-            return TvSeriesMapper.INSTANCE.tvSeriesEntityToTvSeriesDto(entity.get());
-        } catch (NoSuchElementException e) {
-            throw new RuntimeException("Tv Series not found", e);
-        }
+        return tvSeriesRepository.findByTitle(tvSeriesTitle)
+                .map(TvSeriesMapper.INSTANCE::tvSeriesEntityToTvSeriesDto)
+                .orElseThrow(() -> new RuntimeException("Tv Series not found: " + tvSeriesTitle));
     }
 }
