@@ -19,6 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MovieController implements MoviesApi {
     private final MovieService movieService;
+    private final MovieMapper movieMapper;
 
     @Override
     @ViravaSecured(resource = Resources.MOVIES, scope = ScopeType.READ)
@@ -31,7 +32,7 @@ public class MovieController implements MoviesApi {
     @ViravaSecured(resource = Resources.MOVIES, scope = ScopeType.READ)
     public ResponseEntity<MoviesListResponse> getPaginatedMovieList(Integer page, Integer size) {
         List<MovieDto> movieList = movieService.getMovieList(page, size);
-        MoviesListResponse response = MovieMapper.INSTANCE.movieDtoListToMoviesListResponse(movieList);
+        MoviesListResponse response = movieMapper.movieDtoListToMoviesListResponse(movieList);
         return ResponseEntity.ok(response);
     }
 
@@ -39,14 +40,14 @@ public class MovieController implements MoviesApi {
     @ViravaSecured(resource = Resources.MOVIES, scope = ScopeType.READ)
     public ResponseEntity<SingleMovieResponse> getMovieById(Long movieId) {
         MovieDto searchedMovie = movieService.getMovieById(movieId);
-        SingleMovieResponse response = MovieMapper.INSTANCE.movieDtoToSingleMovieResponse(searchedMovie);
+        SingleMovieResponse response = movieMapper.movieDtoToSingleMovieResponse(searchedMovie);
         return ResponseEntity.ok(response);
     }
 
     @Override
     public ResponseEntity<SingleMovieResponse> getMovieByTitle(String title) {
         MovieDto searchedMovie = movieService.getMovieByTitle(title);
-        SingleMovieResponse response = MovieMapper.INSTANCE.movieDtoToSingleMovieResponse(searchedMovie);
+        SingleMovieResponse response = movieMapper.movieDtoToSingleMovieResponse(searchedMovie);
         return ResponseEntity.ok(response);
     }
 }

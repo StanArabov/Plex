@@ -7,14 +7,11 @@ import com.cleverpine.plex.model.MoviesListResponse;
 import com.cleverpine.plex.model.SingleMovie;
 import com.cleverpine.plex.model.SingleMovieResponse;
 import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface MovieMapper {
-    MovieMapper INSTANCE = Mappers.getMapper(MovieMapper.class);
-
     MovieDto movieEntityToMovieDto(MovieEntity entity);
     List<MovieDto> movieEntityListToMovieDtoList(List<MovieEntity> entityList);
 

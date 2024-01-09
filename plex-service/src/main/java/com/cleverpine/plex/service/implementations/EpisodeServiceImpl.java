@@ -14,16 +14,17 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EpisodeServiceImpl implements EpisodeService {
     private final EpisodesRepository episodesRepository;
+    private final EpisodeMapper episodeMapper;
     @Override
     public List<EpisodeDto> getSeasonEpisodes(Integer seasonId) {
         List<EpisodeEntity> episodeEntities = episodesRepository.findBySeasonId(seasonId);
-        return EpisodeMapper.INSTANCE.episodeEntityListToEpisodeDtoList(episodeEntities);
+        return episodeMapper.episodeEntityListToEpisodeDtoList(episodeEntities);
     }
 
     @Override
     public EpisodeDto getEpisodeById(Integer episodeId) {
         return episodesRepository.findById(episodeId)
-                .map(EpisodeMapper.INSTANCE::episodeEntityToEpisodeDto)
+                .map(episodeMapper::episodeEntityToEpisodeDto)
                 .orElseThrow(() -> new RuntimeException("Episode not found with ID: " + episodeId));
     }
 }

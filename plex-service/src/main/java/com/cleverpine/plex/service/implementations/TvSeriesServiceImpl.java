@@ -16,24 +16,25 @@ import java.util.List;
 @Service
 public class TvSeriesServiceImpl implements TvSeriesService {
     private final TvSeriesRepository tvSeriesRepository;
+    private final TvSeriesMapper tvSeriesMapper;
     @Override
     public List<TvSeriesDto> getTvSeriesList(Integer page, Integer size) {
         PageRequest pageRequest = PageRequest.of(page, size);
         Page<TvSeriesEntity> tvSeriesPage = tvSeriesRepository.findAll(pageRequest);
-        return TvSeriesMapper.INSTANCE.tvSeriesEntityListToTvSeriesDtoList(tvSeriesPage.getContent());
+        return tvSeriesMapper.tvSeriesEntityListToTvSeriesDtoList(tvSeriesPage.getContent());
     }
 
     @Override
     public TvSeriesDto getTvSeriesById(Integer tvSeriesId) {
         return tvSeriesRepository.findById(tvSeriesId)
-                .map(TvSeriesMapper.INSTANCE::tvSeriesEntityToTvSeriesDto)
+                .map(tvSeriesMapper::tvSeriesEntityToTvSeriesDto)
                 .orElseThrow(() -> new RuntimeException("Tv Series not found: " + tvSeriesId));
     }
 
     @Override
     public TvSeriesDto getTvSeriesByTitle(String tvSeriesTitle) {
         return tvSeriesRepository.findByTitle(tvSeriesTitle)
-                .map(TvSeriesMapper.INSTANCE::tvSeriesEntityToTvSeriesDto)
+                .map(tvSeriesMapper::tvSeriesEntityToTvSeriesDto)
                 .orElseThrow(() -> new RuntimeException("Tv Series not found: " + tvSeriesTitle));
     }
 }

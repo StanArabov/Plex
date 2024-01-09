@@ -5,16 +5,12 @@ import com.cleverpine.plex.entity.future.SeasonEntity;
 import com.cleverpine.plex.entity.future.TvSeriesEntity;
 import com.cleverpine.plex.model.*;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 import java.util.Set;
 
 @Mapper(componentModel = "spring")
 public interface TvSeriesMapper {
-    TvSeriesMapper INSTANCE = Mappers.getMapper(TvSeriesMapper.class);
-
     TvSeriesListItem tvSeriesDtoToTvSeriesListItem(TvSeriesDto dto);
 
     List<TvSeriesListItem> tvSeriesDtoListToTvSeriesListItemList(List<TvSeriesDto> dtoList);

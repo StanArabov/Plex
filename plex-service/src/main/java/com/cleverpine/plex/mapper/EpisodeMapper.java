@@ -14,7 +14,6 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface EpisodeMapper {
-    EpisodeMapper INSTANCE = Mappers.getMapper(EpisodeMapper.class);
 
     EpisodeDto episodeEntityToEpisodeDto(EpisodeEntity episodeEntity);
 

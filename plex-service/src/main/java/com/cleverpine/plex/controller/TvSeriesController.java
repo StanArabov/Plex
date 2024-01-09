@@ -22,12 +22,14 @@ import java.util.List;
 public class TvSeriesController implements TvSeriesApi {
     private final TvSeriesService tvSeriesService;
     private final EpisodeService episodeService;
+    private final TvSeriesMapper tvSeriesMapper;
+    private final EpisodeMapper episodeMapper;
 
     @Override
     @ViravaSecured(resource = Resources.TV_SERIES, scope = ScopeType.READ)
     public ResponseEntity<TvSeriesListResponse> getPaginatedTvSeriesList(Integer page, Integer size) {
         List<TvSeriesDto> tvSeriesDtos = tvSeriesService.getTvSeriesList(page, size);
-        TvSeriesListResponse response = TvSeriesMapper.INSTANCE.tvSeriesDtoListToTvSeriesListResponse(tvSeriesDtos);
+        TvSeriesListResponse response = tvSeriesMapper.tvSeriesDtoListToTvSeriesListResponse(tvSeriesDtos);
         return ResponseEntity.ok(response);
     }
 
@@ -35,28 +37,28 @@ public class TvSeriesController implements TvSeriesApi {
     @ViravaSecured(resource = Resources.TV_SERIES, scope = ScopeType.READ)
     public ResponseEntity<SingleTvSeriesResponse> getTvSeriesById(Integer tvSeriesId) {
         TvSeriesDto tvSeriesDto = tvSeriesService.getTvSeriesById(tvSeriesId);
-        SingleTvSeriesResponse response = TvSeriesMapper.INSTANCE.tvSeriesDtoToSingleTvSeriesResponse(tvSeriesDto);
+        SingleTvSeriesResponse response = tvSeriesMapper.tvSeriesDtoToSingleTvSeriesResponse(tvSeriesDto);
         return ResponseEntity.ok(response);
     }
 
     @Override
     public ResponseEntity<EpisodeListResponse> getSeasonEpisodes(Integer seasonId) {
         List<EpisodeDto> episodeDtoList = episodeService.getSeasonEpisodes(seasonId);
-        EpisodeListResponse response = EpisodeMapper.INSTANCE.episodeDtosToEpisodeListResponse(episodeDtoList);
+        EpisodeListResponse response = episodeMapper.episodeDtosToEpisodeListResponse(episodeDtoList);
         return ResponseEntity.ok(response);
     }
 
     @Override
     public ResponseEntity<SingleTvSeriesResponse> getTvSeriesByTitle(String title) {
         TvSeriesDto tvSeriesDto = tvSeriesService.getTvSeriesByTitle(title);
-        SingleTvSeriesResponse response = TvSeriesMapper.INSTANCE.tvSeriesDtoToSingleTvSeriesResponse(tvSeriesDto);
+        SingleTvSeriesResponse response = tvSeriesMapper.tvSeriesDtoToSingleTvSeriesResponse(tvSeriesDto);
         return ResponseEntity.ok(response);
     }
 
     @Override
     public ResponseEntity<SingleEpisodeResponse> getEpisodeById(Integer episodeId) {
         EpisodeDto episodeDto = episodeService.getEpisodeById(episodeId);
-        SingleEpisodeResponse response = EpisodeMapper.INSTANCE.episodeDtoToSingleEpisodeResponse(episodeDto);
+        SingleEpisodeResponse response = episodeMapper.episodeDtoToSingleEpisodeResponse(episodeDto);
         return ResponseEntity.ok(response);
     }
 }

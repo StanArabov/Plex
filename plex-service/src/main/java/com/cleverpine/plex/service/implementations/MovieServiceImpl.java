@@ -32,6 +32,7 @@ public class MovieServiceImpl implements MovieService {
     private final EpisodesRepository episodesRepository;
     private final SeasonsRepository seasonsRepository;
     private final MoviesRepository moviesRepository;
+    private final MovieMapper movieMapper;
 
     public void simpleMovieETL() {
         List<MovieEntity> moviesList = new ArrayList<>();
@@ -135,20 +136,20 @@ public class MovieServiceImpl implements MovieService {
     public List<MovieDto> getMovieList(Integer page, Integer size) {
         PageRequest pageRequest = PageRequest.of(page, size);
         Page<MovieEntity> movePage = moviesRepository.findAll(pageRequest);
-        return MovieMapper.INSTANCE.movieEntityListToMovieDtoList(movePage.getContent());
+        return movieMapper.movieEntityListToMovieDtoList(movePage.getContent());
     }
 
     @Override
     public MovieDto getMovieById(Long movieId) {
         return moviesRepository.findById(movieId)
-                .map(MovieMapper.INSTANCE::movieEntityToMovieDto)
+                .map(movieMapper::movieEntityToMovieDto)
                 .orElseThrow(() ->  new RuntimeException("Movie not found: " + movieId));
     }
 
     @Override
     public MovieDto getMovieByTitle(String title) {
         return moviesRepository.findByTitle(title)
-                .map(MovieMapper.INSTANCE::movieEntityToMovieDto)
+                .map(movieMapper::movieEntityToMovieDto)
                 .orElseThrow(() ->  new RuntimeException("Movie not found: " + title));
     }
 }
