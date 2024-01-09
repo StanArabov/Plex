@@ -7,7 +7,7 @@ import com.cleverpine.plex.dto.MovieDto;
 import com.cleverpine.plex.mapper.MovieMapper;
 import com.cleverpine.plex.model.MoviesListResponse;
 import com.cleverpine.plex.model.SingleMovieResponse;
-import com.cleverpine.plex.service.MovieService;
+import com.cleverpine.plex.service.interfaces.MovieService;
 import com.cleverpine.viravaspringhelper.dto.ScopeType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -30,44 +30,24 @@ public class MovieController implements MoviesApi {
 
     @Override
     @ViravaSecured(resource = Resources.MOVIES, scope = ScopeType.READ)
-    public ResponseEntity<MoviesListResponse> apiMoviesGet(Integer page, Integer size) {
-        try {
-            List<MovieDto> movieList = movieService.getMovieList(page, size);
-
-            MoviesListResponse response = new MoviesListResponse();
-            movieList.stream()
-                    .map(movieMapper::movieDtoToMovieListItem)
-                    .forEach(response::addDataItem);
-
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<MoviesListResponse> getPaginatedMovieList(Integer page, Integer size) {
+        List<MovieDto> movieList = movieService.getMovieList(page, size);
+        MoviesListResponse response = movieMapper.movieDtoListToMoviesListResponse(movieList);
+        return ResponseEntity.ok(response);
     }
 
     @Override
     @ViravaSecured(resource = Resources.MOVIES, scope = ScopeType.READ)
-    public ResponseEntity<SingleMovieResponse> apiMoviesMovieIdGet(Long movieId) {
-        try {
-            MovieDto searchedMovie = movieService.getMovieById(movieId);
-            SingleMovieResponse response = new SingleMovieResponse();
-            response.setData(movieMapper.movieDtoToSingleMovie(searchedMovie));
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
-
+    public ResponseEntity<SingleMovieResponse> getMovieById(Long movieId) {
+        MovieDto searchedMovie = movieService.getMovieById(movieId);
+        SingleMovieResponse response = movieMapper.movieDtoToSingleMovieResponse(searchedMovie);
+        return ResponseEntity.ok(response);
     }
 
     @Override
-    public ResponseEntity<SingleMovieResponse> apiMoviesSearchGet(String title) {
-        try{
-            MovieDto searchedMovie = movieService.getMovieByTitle(title);
-            SingleMovieResponse response = new SingleMovieResponse();
-            response.setData(movieMapper.movieDtoToSingleMovie(searchedMovie));
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<SingleMovieResponse> getMovieByTitle(String title) {
+        MovieDto searchedMovie = movieService.getMovieByTitle(title);
+        SingleMovieResponse response = movieMapper.movieDtoToSingleMovieResponse(searchedMovie);
+        return ResponseEntity.ok(response);
     }
 }

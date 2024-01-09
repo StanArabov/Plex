@@ -3,51 +3,35 @@ package com.cleverpine.plex.mapper;
 import com.cleverpine.plex.dto.MovieDto;
 import com.cleverpine.plex.entity.future.MovieEntity;
 import com.cleverpine.plex.model.MovieListItem;
+import com.cleverpine.plex.model.MoviesListResponse;
 import com.cleverpine.plex.model.SingleMovie;
-import org.springframework.stereotype.Component;
+import com.cleverpine.plex.model.SingleMovieResponse;
+import org.mapstruct.Mapper;
 
-@Component
-public class MovieMapper {
+import java.util.List;
 
-    public MovieListItem movieDtoToMovieListItem(MovieDto movieDto) {
-        MovieListItem item = new MovieListItem();
-        item.setId(movieDto.getId());
-        item.setTitle(movieDto.getTitle());
-        return item;
+@Mapper(componentModel = "spring")
+public interface MovieMapper {
+    MovieDto movieEntityToMovieDto(MovieEntity entity);
+    List<MovieDto> movieEntityListToMovieDtoList(List<MovieEntity> entityList);
+
+    MovieListItem movieDtoToMovieListItem(MovieDto dto);
+    List<MovieListItem> movieDtoListToMovieListItemList(List<MovieDto> dtoList);
+
+    default MoviesListResponse movieDtoListToMoviesListResponse(List<MovieDto> dtoList) {
+        MoviesListResponse response = new MoviesListResponse();
+        List<MovieListItem> items = movieDtoListToMovieListItemList(dtoList);
+        response.setData(items);
+        return response;
     }
 
-    public SingleMovie movieDtoToSingleMovie(MovieDto movieDto) {
-        SingleMovie singleMovie = new SingleMovie();
-        singleMovie.setTitle(movieDto.getTitle());
-        singleMovie.setDescription(movieDto.getDescription());
-        singleMovie.setRating(movieDto.getRating());
-        singleMovie.setReleaseDate(movieDto.getReleaseDate().toString());
-        singleMovie.setDuration(movieDto.getDuration());
-        singleMovie.setYear(movieDto.getYear());
-        singleMovie.setDirector(movieDto.getDirector());
-        singleMovie.setWriter(movieDto.getWriter());
-        singleMovie.setGenres(movieDto.getGenres());
-        singleMovie.setStars(movieDto.getStars());
-        singleMovie.setAudio(movieDto.getAudio());
-        singleMovie.setSubtitles(movieDto.getSubtitles());
-        return singleMovie;
+    SingleMovie movieDtoToSingleMovie(MovieDto movieDto);
+
+    default SingleMovieResponse movieDtoToSingleMovieResponse(MovieDto movieDto) {
+        SingleMovieResponse response = new SingleMovieResponse();
+        SingleMovie movie = movieDtoToSingleMovie(movieDto);
+        response.setData(movie);
+        return response;
     }
 
-    public MovieDto movieEntityToMovieDto(MovieEntity movieEntity) {
-        return new MovieDto(
-                movieEntity.getId(),
-                movieEntity.getTitle(),
-                movieEntity.getDescription(),
-                movieEntity.getRating(),
-                movieEntity.getReleaseDate(),
-                movieEntity.getDuration(),
-                movieEntity.getYear(),
-                movieEntity.getDirector(),
-                movieEntity.getWriter(),
-                movieEntity.getGenres(),
-                movieEntity.getStars(),
-                movieEntity.getAudio(),
-                movieEntity.getSubtitles()
-        );
-    }
 }

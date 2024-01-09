@@ -3,6 +3,8 @@ package com.cleverpine.plex.projection;
 import java.time.LocalDateTime;
 
 public interface MovieProjection {
+
+    Integer getMetadataId();
     String getTitle();
 
     String getDescription();
@@ -14,6 +16,12 @@ public interface MovieProjection {
     Integer getDuration();
 
     Integer getYear();
+
+    Integer getType();
+
+    Integer getIndex();
+
+    Integer getParentId();
 
     String getDirector();
 

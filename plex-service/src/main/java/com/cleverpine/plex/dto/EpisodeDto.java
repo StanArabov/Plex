@@ -9,19 +9,19 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @AllArgsConstructor
-public class MovieDto {
+public class EpisodeDto {
 
-    private Long id;
+    private Integer id;
     private String title;
     private String description;
     private Double rating;
     private LocalDate releaseDate;
-    private Integer duration;
-    private Integer year;
     private String director;
     private String writer;
-    private String genres;
     private String stars;
+    private Integer duration;
+    private Integer year;
+    private Integer number;
     private String audio;
     private String subtitles;
 

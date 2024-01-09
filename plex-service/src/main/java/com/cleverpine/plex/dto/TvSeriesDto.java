@@ -1,17 +1,19 @@
 package com.cleverpine.plex.dto;
 
+import com.cleverpine.plex.entity.future.SeasonEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Getter
 @Setter
 @AllArgsConstructor
-public class MovieDto {
+public class TvSeriesDto {
 
-    private Long id;
+    private Integer id;
     private String title;
     private String description;
     private Double rating;
@@ -22,7 +24,6 @@ public class MovieDto {
     private String writer;
     private String genres;
     private String stars;
-    private String audio;
-    private String subtitles;
+    private Set<SeasonEntity> seasons;
 
 }
