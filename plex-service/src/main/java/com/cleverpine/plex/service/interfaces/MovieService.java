@@ -6,8 +6,8 @@ import java.util.List;
 
 
 public interface MovieService {
-    public List<MovieDto> getMovieList(Integer page, Integer size);
-    public MovieDto getMovieById(Long movieId);
-    public MovieDto getMovieByTitle(String title);
-    public void simpleMovieETL();
+    List<MovieDto> getMovieList(Integer page, Integer size);
+    MovieDto getMovieById(Long movieId);
+    MovieDto getMovieByTitle(String title);
+    void simpleMovieETL();
 }

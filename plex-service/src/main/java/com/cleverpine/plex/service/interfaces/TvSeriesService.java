@@ -6,10 +6,10 @@ import java.util.List;
 
 public interface
 TvSeriesService {
-    public List<TvSeriesDto> getTvSeriesList(Integer page, Integer size);
+    List<TvSeriesDto> getTvSeriesList(Integer page, Integer size);
 
-    public TvSeriesDto getTvSeriesById(Integer tvSeriesId);
+    TvSeriesDto getTvSeriesById(Integer tvSeriesId);
 
-    public TvSeriesDto getTvSeriesByTitle(String tvSeriesTitle);
+    TvSeriesDto getTvSeriesByTitle(String tvSeriesTitle);
 
 }

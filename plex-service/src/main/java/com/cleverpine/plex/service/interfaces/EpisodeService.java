@@ -5,7 +5,7 @@ import com.cleverpine.plex.dto.EpisodeDto;
 import java.util.List;
 
 public interface EpisodeService {
-    public List<EpisodeDto> getSeasonEpisodes(Integer seasonId);
+    List<EpisodeDto> getSeasonEpisodes(Integer seasonId);
 
-    public EpisodeDto getEpisodeById(Integer episodeId);
+    EpisodeDto getEpisodeById(Integer episodeId);
 }
