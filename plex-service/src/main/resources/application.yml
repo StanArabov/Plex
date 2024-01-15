@@ -4,23 +4,17 @@ springdoc:
 auth:
   token:
     jwkUrl: https://virava-keycloak.thepineslab.net/auth/realms/crc-test/protocol/openid-connect/certs
-#   jwkUrl: https://virava-keycloak.thepineslab.net/realms/crc-test/protocol/openid-connect/certs
-#    jwkSetUrl: https://virava-keycloak.thepineslab.net/realms/crc-test/protocol/openid-connect/certs
-#    secret: aa69d908-d04e-49dc-844e-49006cec3225
     emailPath: email
     usernamePath: preferred_username
     rolesPath: resource_access.crc-test.roles
-    ## remove the secret and issuer if working with an API Gateway
-#auth:
-#  token:
-#    usernamePath: preferred_username
-#    emailPath: email
-##    namePath: name
-#    rolesPath: resource_access.account.roles
-#    jwkSetUrl: https://virava-keycloak.thepineslab.net/realms/crc-test/protocol/openid-connect/certs
 spring:
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: stanislav
+    password: test123
+    virtual-host: plex_virtual_host
   datasource:
-    #jdbc-url: jdbc:sqlserver://localhost:1433;database=my-mssql;encrypt=true;trustServerCertificate=true;
     jdbc-url: jdbc:sqlserver://127.0.0.1:1433;databaseName=my-mssql;encrypt=true;trustServerCertificate=true;
     username: sa
     password: P@ssw0rd
