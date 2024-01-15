@@ -1,6 +1,10 @@
 package com.cleverpine.plex.mapper;
 
+import com.cleverpine.plex.dto.ReceivedEpisodeDto;
+import com.cleverpine.plex.dto.ReceivedSeasonDto;
+import com.cleverpine.plex.dto.ReceivedTvSeriesDto;
 import com.cleverpine.plex.dto.TvSeriesDto;
+import com.cleverpine.plex.entity.future.EpisodeEntity;
 import com.cleverpine.plex.entity.future.SeasonEntity;
 import com.cleverpine.plex.entity.future.TvSeriesEntity;
 import com.cleverpine.plex.model.*;
@@ -44,4 +48,8 @@ public interface TvSeriesMapper {
         tvSeriesSeasons.setData(seasonEntityListToSeasonListItemList(set));
         return tvSeriesSeasons;
     };
+
+    List<TvSeriesEntity> receivedTvSeriesDtoListToTvSeriesEntityList(List<ReceivedTvSeriesDto> list);
+    List<SeasonEntity> receivedSeasonDtoListToSeasonEntityList(List<ReceivedSeasonDto> list);
+    List<EpisodeEntity> receivedEpisodeDtoListToEpisodeEntityList(List<ReceivedEpisodeDto> list);
 }

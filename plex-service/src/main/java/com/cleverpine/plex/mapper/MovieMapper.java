@@ -1,6 +1,7 @@
 package com.cleverpine.plex.mapper;
 
 import com.cleverpine.plex.dto.MovieDto;
+import com.cleverpine.plex.dto.ReceivedMovieDto;
 import com.cleverpine.plex.entity.future.MovieEntity;
 import com.cleverpine.plex.model.MovieListItem;
 import com.cleverpine.plex.model.MoviesListResponse;
@@ -33,5 +34,7 @@ public interface MovieMapper {
         response.setData(movie);
         return response;
     }
+
+    List<MovieEntity> receivedMovieDtoListToMovieEntityList(List<ReceivedMovieDto> list);
 
 }
