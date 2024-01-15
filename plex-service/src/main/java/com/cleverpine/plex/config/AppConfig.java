@@ -1,8 +1,6 @@
 package com.cleverpine.plex.config;
 
-import com.cleverpine.plex.service.MailClient;
-import com.cleverpine.plex.service.MailClientImpl;
-import com.cleverpine.plex.service.MockMailClientImpl;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +17,7 @@ public class AppConfig {
     public ObjectMapper objectMapper() {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
+        objectMapper.configure(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS, false);
         return objectMapper;
     }
 
